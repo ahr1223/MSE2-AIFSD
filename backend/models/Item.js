@@ -9,6 +9,11 @@ const ItemSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  category: {
+    type: String,
+    required: true,
+    enum: ['Electronics', 'Documents', 'Clothing', 'Accessories', 'Books', 'Keys', 'Wallet', 'Phone', 'Others']
+  },
   type: {
     type: String,
     required: true,

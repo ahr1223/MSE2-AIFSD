@@ -1,21 +1,17 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
+const connectDB = require('./config/database');
+const errorHandler = require('./utils/errorHandler');
+
+// Connect to database
+connectDB();
 
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
-
-// Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.log(err));
 
 // Root route for testing
 app.get('/', async (req, res) => {
@@ -43,6 +39,9 @@ app.get('/', async (req, res) => {
 app.use('/api', require('./routes/auth'));
 app.use('/api/items', require('./routes/items'));
 app.use('/api/admin', require('./routes/admin'));
+
+// Error Handler Middleware
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
